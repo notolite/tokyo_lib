@@ -253,6 +253,7 @@
             Array.from(document.getElementsByClassName("区名")).forEach(item => {
                 if (item.classList.contains("表示")) { item.classList.remove("表示"); }
             });
+            document.getElementById("extra").innerText = "";
             描画内容 = "<img src='pics/root.png'>"
             document.getElementById("地図").innerHTML = 描画内容;
             const o_data = new FormData(office);
