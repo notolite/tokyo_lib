@@ -170,9 +170,10 @@
                     for="katsushika">葛飾</label>
                 <input type="radio" name="residence" id="edogawa" value="edogawa"><label for="edogawa">江戸川</label>
                 <input type="radio" name="residence" id="kawaguchi" value="kawaguchi"><label for="kawaguchi">川口</label>
-                <input type="radio" name="residence" id="nishitokyo" value=""><label for="nishitokyo">西東京</label>
-                <input type="radio" name="residence" id="musashino" value=""><label for="musashino">武蔵野</label>
-                <input type="radio" name="residence" id="mitaka" value=""><label for="mitaka">三鷹</label>
+                <input type="radio" name="residence" id="nishitokyo" value="nishitokyo"><label
+                    for="nishitokyo">西東京</label>
+                <input type="radio" name="residence" id="musashino" value="musashino"><label for="musashino">武蔵野</label>
+                <input type="radio" name="residence" id="mitaka" value="mitaka"><label for="mitaka">三鷹</label>
                 <input type="radio" name="residence" id="toka" value="toka"><label for="toka">その他都下</label>
                 <input type="radio" name="residence" id="niiza" value="niiza"><label for="niiza">新座</label>
                 <input type="radio" name="residence" id="asaka" value="asaka"><label for="asaka">朝霞</label>
@@ -315,7 +316,7 @@
                     居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "koto", "katsushika", "edogawa"];
                     break;
                 case "koto":
-                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "sumida", "katsuhika", "edogawa"];
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "sumida", "katsushika", "edogawa"];
                     break;
                 case "shinagawa":
                     居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "koto", "ota"];
@@ -420,10 +421,9 @@
                 default:
                     break;
             }
-            switch (勤務区) {
+            switch (居住区) {
                 case "togai":
                 case "toka":
-                case "nashi":
                 case "mitaka":
                 case "musashino":
                 case "nishitokyo":
@@ -443,10 +443,10 @@
                     document.getElementById("l_" + 居住区).classList.add("表示");
                     break;
             }
-
             居住要件.forEach(item => {
                 描画内容 += "<img src='pics/" + item + ".png'>";
                 document.getElementById("l_" + item).classList.add("表示");
+                console.log(item);
             });
             document.getElementById("地図").innerHTML = 描画内容;
         }
