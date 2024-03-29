@@ -264,11 +264,14 @@
             let 勤務要件 = [];
             switch (勤務区) {
                 case "toka":
+                case "minato":
                     勤務要件 = ["shibuya"];
                     break;
                 case "togai":
-                    break;
                 case "nashi":
+                    break;
+                case "shibuya":
+                    勤務要件 = ["minato"];
                     break;
                 default:
                     勤務要件 = ["minato", "shibuya"];
