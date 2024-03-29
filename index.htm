@@ -383,37 +383,37 @@
                     居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya"];
                     break;
                 case "niiza":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "nerima"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "nerima"];
                     break;
                 case "asaka":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "nerima"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "nerima"];
                     break;
                 case "wako":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "nerima", "itabashi"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "nerima", "itabashi"];
                     break;
                 case "toda":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "itabashi"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "itabashi"];
                     break;
                 case "soka":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "adachi"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "adachi"];
                     break;
                 case "yashio":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "adachi", "katsushika"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "adachi", "katsushika"];
                     break;
                 case "kawaguchi":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "adachi"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "adachi"];
                     break;
                 case "misato":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "katsushika"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "katsushika"];
                     break;
                 case "matsudo":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "katsushika"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "katsushika"];
                     break;
                 case "ichikawa":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "katsushika", "edogawa"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "katsushika", "edogawa"];
                     break;
                 case "urayasu":
-                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "edogawa"];
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "edogawa"];
                     break;
                 case "togai":
                     居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita"];
@@ -446,7 +446,6 @@
             居住要件.forEach(item => {
                 描画内容 += "<img src='pics/" + item + ".png'>";
                 document.getElementById("l_" + item).classList.add("表示");
-                console.log(item);
             });
             document.getElementById("地図").innerHTML = 描画内容;
         }
