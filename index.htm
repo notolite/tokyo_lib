@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>東京23区 図書館利用登録 要件一覧</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+        body {
+            position: relative;
+            font-family: "Kosugi Maru", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: small;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-family: sans-serif;
+        }
+
+        div img {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .本居住区 {
+            filter: hue-rotate(30deg);
+        }
+
+        .本勤務区 {
+            filter: hue-rotate(240deg);
+        }
+
+        .勤務地隣接区 {
+            filter: hue-rotate(200deg);
+        }
+
+        form {
+            margin-top: 20px;
+            padding: 5px;
+            background: #FAEFEE;
+        }
+
+        input {
+            margin-left: 0;
+        }
+
+        fieldset {
+            border: none;
+        }
+
+        dt,
+        dd {
+            display: inline-block;
+        }
+
+        dd {
+            margin-left: 20px;
+        }
+
+        .区名 {
+            position: absolute;
+            text-shadow: 1px 1px 0 white, -1px -1px 0 white,
+                -1px 1px 0 white, 1px -1px 0 white,
+                1px 0 0 white, -1px 0 0 white,
+                0 1px 0 white, 0 -1px 0 white;
+            display: none;
+        }
+
+        .表示 {
+            display: block !important;
+        }
+
+        #cap2 {
+            border: black 1px solid;
+            padding: 2px;
+        }
+
+        @media screen and (max-width:480px) {
+            #描画部 {
+                transform: scale(0.8) translateX(-10%);
+            }
+
+            #選択部 {
+                position: absolute;
+                top: 420px;
+                width: 100%;
+            }
+        }
+
+        @media screen and (min-width:481px) {
+            #描画部 {
+                transform: scale(1.15) translateX(10%);
+            }
+
+            #選択部 {
+                position: absolute;
+                right: 15px;
+                width: 35%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="描画部">
+        <div id="地図">
+            <img src="pics/root.png">
+        </div>
+        <p class="区名" style="top: 200px; left: 245px;" id="l_chiyoda">千代田</p>
+        <p class="区名" style="top: 220px; left: 280px;" id="l_chuo">中央</p>
+        <p class="区名" style="top: 260px; left: 235px;" id="l_minato">港</p>
+        <p class="区名" style="top: 185px; left: 200px;" id="l_shinjuku">新宿</p>
+        <p class="区名" style="top: 155px; left: 240px;" id="l_bunkyo">文京</p>
+        <p class="区名" style="top: 155px; left: 295px;" id="l_taito">台東</p>
+        <p class="区名" style="top: 155px; left: 340px;" id="l_sumida">墨田</p>
+        <p class="区名" style="top: 220px; left: 340px;" id="l_koto">江東</p>
+        <p class="区名" style="top: 330px; left: 225px;" id="l_shinagawa">品川</p>
+        <p class="区名" style="top: 300px; left: 170px;" id="l_meguro">目黒</p>
+        <p class="区名" style="top: 390px; left: 205px;" id="l_ota">大田</p>
+        <p class="区名" style="top: 280px; left: 75px;" id="l_setagaya">世田谷</p>
+        <p class="区名" style="top: 240px; left: 180px;" id="l_shibuya">渋谷</p>
+        <p class="区名" style="top: 170px; left: 140px;" id="l_nakano">中野</p>
+        <p class="区名" style="top: 180px; left: 80px;" id="l_suginami">杉並</p>
+        <p class="区名" style="top: 100px; left: 80px;" id="l_nerima">練馬</p>
+        <p class="区名" style="top: 90px; left: 240px;" id="l_kita">北</p>
+        <p class="区名" style="top: 130px; left: 200px;" id="l_toshima">豊島</p>
+        <p class="区名" style="top: 70px; left: 160px;" id="l_itabashi">板橋</p>
+        <p class="区名" style="top: 120px; left: 290px;" id="l_arakawa">荒川</p>
+        <p class="区名" style="top: 50px; left: 320px;" id="l_adachi">足立</p>
+        <p class="区名" style="top: 100px; left: 380px;" id="l_katsushika">葛飾</p>
+        <p class="区名" style="top: 200px; left: 400px;" id="l_edogawa">江戸川</p>
+        <p class="区名" id="l_toka"></p>
+        <p class="区名" id="l_togai"></p>
+        <p class="区名" id="l_nashi"></p>
+        <p style="position: absolute; top: 350px; left: 380px; width: 120px;" id="cap2">地図中のほか：<br>川口<span
+                id="extra"></span></p>
+    </div>
+
+    <div id="選択部">
+        <h1>23区・登録できる図書館リスト</h1>
+        <form name="居住区" id="居住区選択" onsubmit="return false;">
+            <legend>在住</legend>
+            <fieldset>
+                <input type="radio" name="residence" id="chiyoda" value="chiyoda"><label for="chiyoda">千代田</label>
+                <input type="radio" name="residence" id="chuo" value="chuo"><label for="chuo">中央</label>
+                <input type="radio" name="residence" id="minato" value="minato"><label for="minato">港</label>
+                <input type="radio" name="residence" id="shinjuku" value="shinjuku"><label for="shinjuku">新宿</label>
+                <input type="radio" name="residence" id="bunkyo" value="bunkyo"><label for="bunkyo">文京</label>
+                <input type="radio" name="residence" id="taito" value="taito"><label for="taito">台東</label>
+                <input type="radio" name="residence" id="sumida" value="sumida"><label for="sumida">墨田</label>
+                <input type="radio" name="residence" id="koto" value="koto"><label for="koto">江東</label>
+                <input type="radio" name="residence" id="shinagawa" value="shinagawa"><label for="shinagawa">品川</label>
+                <input type="radio" name="residence" id="meguro" value="meguro"><label for="meguro">目黒</label>
+                <input type="radio" name="residence" id="ota" value="ota"><label for="ota">大田</label>
+                <input type="radio" name="residence" id="setagaya" value="setagaya"><label for="setagaya">世田谷</label>
+                <input type="radio" name="residence" id="shibuya" value="shibuya"><label for="shibuya">渋谷</label>
+                <input type="radio" name="residence" id="nakano" value="nakano"><label for="nakano">中野</label>
+                <input type="radio" name="residence" id="suginami" value="suginami"><label for="suginami">杉並</label>
+                <input type="radio" name="residence" id="toshima" value="toshima"><label for="toshima">豊島</label>
+                <input type="radio" name="residence" id="kita" value="kita"><label for="kita">北</label>
+                <input type="radio" name="residence" id="arakawa" value="arakawa"><label for="arakawa">荒川</label>
+                <input type="radio" name="residence" id="itabashi" value="itabashi"><label for="itabashi">板橋</label>
+                <input type="radio" name="residence" id="nerima" value="nerima"><label for="nerima">練馬</label>
+                <input type="radio" name="residence" id="adachi" value="adachi"><label for="adachi">足立</label>
+                <input type="radio" name="residence" id="katsushika" value="katsushika"><label
+                    for="katsushika">葛飾</label>
+                <input type="radio" name="residence" id="edogawa" value="edogawa"><label for="edogawa">江戸川</label>
+                <input type="radio" name="residence" id="kawaguchi" value="kawaguchi"><label for="kawaguchi">川口</label>
+                <input type="radio" name="residence" id="nishitokyo" value=""><label for="nishitokyo">西東京</label>
+                <input type="radio" name="residence" id="musashino" value=""><label for="musashino">武蔵野</label>
+                <input type="radio" name="residence" id="mitaka" value=""><label for="mitaka">三鷹</label>
+                <input type="radio" name="residence" id="toka" value="toka"><label for="toka">その他都下</label>
+                <input type="radio" name="residence" id="niiza" value="niiza"><label for="niiza">新座</label>
+                <input type="radio" name="residence" id="asaka" value="asaka"><label for="asaka">朝霞</label>
+                <input type="radio" name="residence" id="wako" value="wako"><label for="wako">和光</label>
+                <input type="radio" name="residence" id="toda" value="toda"><label for="toda">戸田</label>
+                <input type="radio" name="residence" id="soka" value="soka"><label for="soka">草加</label>
+                <input type="radio" name="residence" id="yashio" value="yashio"><label for="yashio">八潮</label>
+                <input type="radio" name="residence" id="misato" value="misato"><label for="misato">三郷</label>
+                <input type="radio" name="residence" id="matsudo" value="matsudo"><label for="matsudo">松戸</label>
+                <input type="radio" name="residence" id="ichikawa" value="ichikawa"><label for="ichikawa">市川</label>
+                <input type="radio" name="residence" id="urayasu" value="urayasu"><label for="urayasu">浦安</label>
+                <input type="radio" name="residence" id="togai" value="togai" checked><label for="togai">その他都外</label>
+            </fieldset>
+        </form>
+        <form name="office" id="勤務区選択" onsubmit="return false;">
+            <legend>在勤在学</legend>
+            <fieldset>
+                <input type="radio" name="office" id="o_chiyoda" value="chiyoda"><label for="o_chiyoda">千代田</label>
+                <input type="radio" name="office" id="o_chuo" value="chuo"><label for="o_chuo">中央</label>
+                <input type="radio" name="office" id="o_minato" value="minato"><label for="o_minato">港</label>
+                <input type="radio" name="office" id="o_shinjuku" value="shinjuku"><label for="o_shinjuku">新宿</label>
+                <input type="radio" name="office" id="o_bunkyo" value="bunkyo"><label for="o_bunkyo">文京</label>
+                <input type="radio" name="office" id="o_taito" value="taito"><label for="o_taito">台東</label>
+                <input type="radio" name="office" id="o_sumida" value="sumida"><label for="o_sumida">墨田</label>
+                <input type="radio" name="office" id="o_koto" value="koto"><label for="o_koto">江東</label>
+                <input type="radio" name="office" id="o_shinagawa" value="shinagawa"><label for="o_shinagawa">品川</label>
+                <input type="radio" name="office" id="o_meguro" value="meguro"><label for="o_meguro">目黒</label>
+                <input type="radio" name="office" id="o_ota" value="ota"><label for="o_ota">大田</label>
+                <input type="radio" name="office" id="o_setagaya" value="setagaya"><label for="o_setagaya">世田谷</label>
+                <input type="radio" name="office" id="o_shibuya" value="shibuya"><label for="o_shibuya">渋谷</label>
+                <input type="radio" name="office" id="o_nakano" value="nakano"><label for="o_nakano">中野</label>
+                <input type="radio" name="office" id="o_suginami" value="suginami"><label for="o_suginami">杉並</label>
+                <input type="radio" name="office" id="o_toshima" value="toshima"><label for="o_toshima">豊島</label>
+                <input type="radio" name="office" id="o_kita" value="kita"><label for="o_kita">北</label>
+                <input type="radio" name="office" id="o_arakawa" value="arakawa"><label for="o_arakawa">荒川</label>
+                <input type="radio" name="office" id="o_itabashi" value="itabashi"><label for="o_itabashi">板橋</label>
+                <input type="radio" name="office" id="o_nerima" value="nerima"><label for="o_nerima">練馬</label>
+                <input type="radio" name="office" id="o_adachi" value="adachi"><label for="o_adachi">足立</label>
+                <input type="radio" name="office" id="o_katsushika" value="katsushika"><label
+                    for="o_katsushika">葛飾</label>
+                <input type="radio" name="office" id="o_edogawa" value="edogawa"><label for="o_edogawa">江戸川</label>
+                <input type="radio" name="office" id="o_toka" value="toka"><label for="o_toka">都下</label>
+                <input type="radio" name="office" id="o_togai" value="togai"><label for="o_togai">都外</label>
+                <input type="radio" name="office" id="o_nashi" value="nashi" checked><label for="o_nashi">なし</label>
+            </fieldset>
+        </form>
+        <p id="cap"></p>
+        <dl>
+            <dt style="color: #FBB3A9;">■</dt>
+            <dd>住んでいる区</dd>
+            <div></div>
+            <dt style="color: #FFAEC9;">■</dt>
+            <dd>住んでいる区に近い地域</dd>
+            <div></div>
+            <dt style="color: #9BC7F3;">■</dt>
+            <dd>会社・学校がある区</dd>
+            <div></div>
+            <dt style="color: #84D2CF">■</dt>
+            <dd>会社・学校がある区に近い地域</dd>
+        </dl>
+        <p>家の場所と会社・学校がある場所の両方の理由から利用登録ができる場合は、家のほうの色で示しています。</p>
+        <p>本ページの地図は<a href="http://www.craftmap.box-i.net/">CraftMAP</a>のデータを加工して使用しています。</p>
+    </div>
+    <script>
+        let 描画内容 = "<img src='pics/root.png'>";
+        const office = document.querySelector("#勤務区選択");
+        window.onload = () => { 再描画() };
+        office.addEventListener("change", (event) => {
+            再描画();
+        });
+        const residence = document.querySelector("#居住区選択");
+        residence.addEventListener("change", (event) => {
+            再描画();
+        });
+
+        function 再描画() {
+            Array.from(document.getElementsByClassName("区名")).forEach(item => {
+                if (item.classList.contains("表示")) { item.classList.remove("表示"); }
+            });
+            描画内容 = "<img src='pics/root.png'>"
+            document.getElementById("地図").innerHTML = 描画内容;
+            const o_data = new FormData(office);
+            let 勤務区;
+            for (const entry of o_data) {
+                勤務区 = entry[1];
+            }
+            let 勤務要件 = [];
+            switch (勤務区) {
+                case "toka":
+                    勤務要件 = ["shibuya"];
+                    break;
+                case "togai":
+                    break;
+                case "nashi":
+                    break;
+                default:
+                    勤務要件 = ["minato", "shibuya"];
+                    break;
+            }
+            switch (勤務区) {
+                case "togai":
+                case "toka":
+                case "nashi":
+                    break;
+                default:
+                    描画内容 += "<img src='pics/" + 勤務区 + ".png' class='本勤務区'>";
+                    document.getElementById("l_" + 勤務区).classList.add("表示");
+                    break;
+            }
+            勤務要件.forEach(item => {
+                描画内容 += "<img src='pics/" + item + ".png' class='勤務地隣接区'>";
+                document.getElementById("l_" + item).classList.add("表示");
+            });
+            const data = new FormData(residence);
+            let 居住区;
+            for (const entry of data) {
+                居住区 = entry[1];
+            }
+            let 居住要件 = [];
+            switch (居住区) {
+                case "chiyoda":
+                    居住要件 = ["chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi"];
+                    break;
+                case "chuo":
+                    居住要件 = ["chiyoda", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "sumida", "koto"];
+                    break;
+                case "minato":
+                    居住要件 = ["chiyoda", "chuo", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "koto"];
+                    break;
+                case "shinjuku":
+                    居住要件 = ["chiyoda", "chuo", "minato", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "nakano"];
+                    break;
+                case "bunkyo":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi"];
+                    break;
+                case "taito":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "sumida"];
+                    break;
+                case "sumida":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "koto", "katsushika", "edogawa"];
+                    break;
+                case "koto":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "sumida", "katsuhika", "edogawa"];
+                    break;
+                case "shinagawa":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "koto", "ota"];
+                    break;
+                case "meguro":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "ota"];
+                    break;
+                case "ota":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi"];
+                    break;
+                case "setagaya":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "shibuya", "toshima", "kita", "arakawa", "adachi", "ota", "suginami"];
+                    document.getElementById("extra").innerText = "調布（区内一部地域）・三鷹・狛江";
+                    break;
+                case "shibuya":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "toshima", "kita", "arakawa", "adachi", "ota", "nakano", "suginami"];
+                    break;
+                case "nakano":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "suginami", "nerima"];
+                    break;
+                case "suginami":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "nakano", "nerima"];
+                    document.getElementById("extra").innerText = "・武蔵野・三鷹";
+                    break;
+                case "toshima":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "kita", "arakawa", "adachi", "nakano", "itabashi", "nerima"];
+                    break;
+                case "kita":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "arakawa", "adachi", "itabashi"];
+                    document.getElementById("extra").innerText = "・戸田";
+                    break;
+                case "arakawa":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "adachi"];
+                    break;
+                case "itabashi":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "nerima"];
+                    document.getElementById("extra").innerText = "・戸田";
+                    break;
+                case "nerima":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "nakano", "suginami", "itabashi"];
+                    document.getElementById("extra").innerText = "・新座・西東京・武蔵野";
+                    break;
+                case "adachi":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "sumida", "koto", "katsushika", "edogawa"];
+                    document.getElementById("extra").innerText = "・草加";
+                    break;
+                case "katsushika":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "sumida", "koto", "edogawa"];
+                    document.getElementById("extra").innerText = "・松戸";
+                    break;
+                case "edogawa":
+                    居住要件 = ["chiyoda", "chuo", "minato", "shinjuku", "bunkyo", "taito", "shinagawa", "meguro", "setagaya", "shibuya", "toshima", "kita", "arakawa", "adachi", "sumida", "koto", "katsushika"];
+                    break;
+                case "nishitokyo":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "nerima"];
+                    break;
+                case "musashino":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "nerima", "suginami"];
+                    break;
+                case "mitaka":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "suginami"];
+                    break;
+                case "toka":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya"];
+                    break;
+                case "niiza":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "nerima"];
+                    break;
+                case "asaka":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "nerima"];
+                    break;
+                case "wako":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "nerima", "itabashi"];
+                    break;
+                case "toda":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "itabashi"];
+                    break;
+                case "soka":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "adachi"];
+                    break;
+                case "yashio":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "adachi", "katsushika"];
+                    break;
+                case "kawaguchi":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "adachi"];
+                    break;
+                case "misato":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "katsushika"];
+                    break;
+                case "matsudo":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "katsushika"];
+                    break;
+                case "ichikawa":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "katsushika", "edogawa"];
+                    break;
+                case "urayasu":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita", "shinjuku", "shibuya", "edogawa"];
+                    break;
+                case "togai":
+                    居住要件 = ["chiyoda", "chuo", "bunkyo", "shinagawa", "meguro", "setagaya", "toshima", "kita"];
+                    break;
+                default:
+                    break;
+            }
+            switch (勤務区) {
+                case "togai":
+                case "toka":
+                case "nashi":
+                case "mitaka":
+                case "musashino":
+                case "nishitokyo":
+                case "niiza":
+                case "asaka":
+                case "wako":
+                case "toda":
+                case "soka":
+                case "yashio":
+                case "misato":
+                case "matsudo":
+                case "ichikawa":
+                case "urayasu":
+                    break;
+                default:
+                    描画内容 += "<img src='pics/" + 居住区 + ".png' class='本居住区'>";
+                    document.getElementById("l_" + 居住区).classList.add("表示");
+                    break;
+            }
+
+            居住要件.forEach(item => {
+                描画内容 += "<img src='pics/" + item + ".png'>";
+                document.getElementById("l_" + item).classList.add("表示");
+            });
+            document.getElementById("地図").innerHTML = 描画内容;
+        }
+
+    </script>
+</body>
+
+</html>
